@@ -15,42 +15,31 @@ namespace SheepWolfStarter.Model
     /// </summary>
     public class Sheep : IAgent<GrasslandLayer>, IPositionable
     {
-        private Position _position;
-        private GrasslandLayer Grassland { get; set; }
-
-        [PropertyDescription(Name = "unregisterHandle")]
+        [PropertyDescription]
         public UnregisterAgent UnregisterHandle { get; set; }
 
-        public string Rule { get; set; }
-        public int Energy { get; set; }
+        [PropertyDescription]
         public int SheepGainFromFood { get; set; }
+
+        [PropertyDescription]
         public int SheepReproduce { get; set; }
-
-        public Position Position
-        {
-            get => _position;
-            set
-            {
-                //TODO delete
-                if (value.X < 0 || value.Y < 0 || value.X >= 50 || value.Y >= 50)
-                { 
-                    throw new ApplicationException($"Position outside of bounds: {Position}");
-                }
-
-                _position = value;
-            }
-        }
 
         public void Init(GrasslandLayer layer)
         {
-            Grassland = layer;
+            _grassland = layer;
 
             //Spawn somewhere in the grid when the simulation starts
-            RandomPosition = Grassland.FindRandomPosition();
-            Position = Grassland.FindRandomPosition();
-            Grassland.SheepEnvironment.Insert(this);
+            Position = _grassland.FindRandomPosition();
+            _grassland.SheepEnvironment.Insert(this);
             Energy = RandomHelper.Random.Next(2 * SheepGainFromFood);
         }
+
+        private GrasslandLayer _grassland;
+
+        public Position Position { get; set; }
+
+        public string Rule { get; private set; }
+        public int Energy { get; private set; }
 
         public void Tick()
         {
@@ -58,7 +47,7 @@ namespace SheepWolfStarter.Model
             Spawn(SheepReproduce);
             RandomMove();
 
-            if (Grassland[Position] > 0)
+            if (_grassland[Position] > 0)
             {
                 Rule = "R1 - Eat grass";
                 EatGrass();
@@ -82,52 +71,32 @@ namespace SheepWolfStarter.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
-                var sheep = Grassland.AgentManager.Create<Sheep>().First();
+                var sheep = _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>().First();
                 sheep.Position = (Position) Position.Clone();
+                _grassland.SheepEnvironment.PosAt(sheep, sheep.Position.PositionArray);
                 sheep.Energy = Energy;
                 Energy /= 2;
             }
         }
 
-        /// <summary>
-        ///     Sheep moves 1 step straight or diagonal(1.4243)
-        /// </summary>
         private void RandomMove()
         {
-            RandomPosition = Grassland.FindRandomPosition();
-            Position = Grassland.SheepEnvironment.MoveTo(this, RandomPosition, 1);
+            //Sheep moves 1 step straight or diagonal(1.4243)
+            var bearing = RandomHelper.Random.Next(360);
+            Position = _grassland.SheepEnvironment.MoveTowards(this, bearing, 1);
         }
-
-        public Position RandomPosition { get; set; }
-
-        public int WantToX => (int) RandomPosition.X;
-        public int WantToY => (int) RandomPosition.Y;
-
-        // private void RandomMove()
-        // {
-        //     var previous = (Position) Position.Clone();
-        //     var findRandomPosition = Grassland.FindRandomPosition();
-        //     var newPosition = Grassland.SheepEnvironment.MoveTo(this, findRandomPosition, 1);
-        //     if (newPosition.X >= 0 && newPosition.Y >= 0 && newPosition.X < 50 && newPosition.Y < 50)
-        //     {
-        //         Position = newPosition;
-        //     }
-        //     else
-        //     {
-        //         Position = Grassland.SheepEnvironment.MoveTo(this, previous, 1);
-        //     }
-        // }
 
         private void EatGrass()
         {
             Energy += SheepGainFromFood;
-            Grassland[Position] = Math.Max(Grassland[Position] - 3, 0);
+            var grassValue = _grassland[Position];
+            _grassland[Position] = Math.Max(grassValue - 3, 0);
         }
 
         public void Kill()
         {
-            // Grassland.SheepEnvironment.Remove(this);
-            // UnregisterHandle.Invoke(Grassland, this);
+            _grassland.SheepEnvironment.Remove(this);
+            UnregisterHandle.Invoke(_grassland, this);
         }
 
         public Guid ID { get; set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Mars.Common;
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Environments;
@@ -11,98 +12,86 @@ namespace SheepWolfStarter.Model
 {
     public class Wolf : IAgent<GrasslandLayer>, IPositionable
     {
-        private GrasslandLayer Grassland { get; set; }
+        [PropertyDescription]
+        public UnregisterAgent UnregisterHandle { get; set; }
+
+        [PropertyDescription]
+        public int WolfGainFromFood { get; set; }
+
+        [PropertyDescription]
+        public int WolfReproduce { get; set; }
 
         public void Init(GrasslandLayer layer)
         {
-            Grassland = layer;
-            
+            _grassland = layer;
+
             //Spawn somewhere in the grid when the simulation starts
             var random = RandomHelper.Random;
-            Position = Grassland.FindRandomPosition();
-            Grassland.WolfEnvironment.Insert(this);
+            Position = _grassland.FindRandomPosition();
+            _grassland.WolfEnvironment.Insert(this);
             Energy = random.Next(2 * WolfGainFromFood);
+            TargetDistance = 1000;
         }
 
-        [PropertyDescription (Name = "unregisterHandle")]
-        public UnregisterAgent UnregisterHandle { get; set; }
+        private GrasslandLayer _grassland;
 
         public Position Position { get; set; }
 
-        public int WolfGainFromFood { get; set; }
-        public int WolfReproduce { get; set; }
-
-        public string Rule { get; set; }
-        public int Energy { get; set; }
+        public string Rule { get; private set; }
+        public int Energy { get; private set; }
 
         public void Tick()
         {
             EnergyLoss();
             Spawn(WolfReproduce);
-            RandomMove();
-            var target = Grassland.SheepEnvironment.Explore(Position).FirstOrDefault();
+            
+            var target = _grassland.SheepEnvironment.Explore(Position).FirstOrDefault();
             if (target != null)
             {
-                var targetDistance = Distance.Chebyshev(Position.PositionArray, target.Position.PositionArray);
-                if (targetDistance < 1)
+                var chebyshev = (int)Distance.Chebyshev(Position.PositionArray, target.Position.PositionArray);
+                TargetDiff =  Math.Abs(TargetDistance - chebyshev);
+                TargetDistance = chebyshev;
+                if (TargetDistance < 1)
                 {
                     Rule = "R3 - Eat Sheep";
                     EatSheep(target);
+                } else if (TargetDistance < 5)
+                {
+                    Rule = "R4 - Sheep near by - move towards it";
+                    var bearing = Position.GetBearing(target.Position);
+                    Position = _grassland.WolfEnvironment.MoveTo(this, bearing, 2);
                 }
                 else
                 {
-                    Rule = "R4 - No sheep on my point";
-                    // Position = Grassland.WolfEnvironment.MoveTo(this, target.Position, 2);
-                    
-                    var previous = (Position) Position.Clone();
-                    var newPosition = Grassland.WolfEnvironment.MoveTo(this, target.Position, 2);
-                    if (newPosition.X >= 0 && newPosition.Y >= 0 && newPosition.X < 50 && newPosition.Y < 50)
-                    {
-                        Position = newPosition;
-                    }
-                    else
-                    {
-                        Position = Grassland.WolfEnvironment.MoveTo(this, previous, 1);
-                    }
-                    
+                    Rule = "R5 - No sheep near by - random move";
+                    RandomMove();
                 }
             }
             else
             {
-                Rule = "R5 - No more sheep exist";
+                Rule = "R6 - No more sheep exist";
             }
         }
+
+        public int TargetDiff { get; set; }
+        public int TargetDistance { get; set; }
 
         private void EnergyLoss()
         {
             Energy -= 1;
             if (Energy <= 0)
             {
-                Grassland.WolfEnvironment.Remove(this);
-                UnregisterHandle.Invoke(Grassland, this);
+                _grassland.WolfEnvironment.Remove(this);
+                UnregisterHandle.Invoke(_grassland, this);
             }
         }
 
         private void RandomMove()
         {
-            Position = Grassland.WolfEnvironment.MoveTo(this, Grassland.FindRandomPosition(), 3);
+            var bearing = RandomHelper.Random.Next(360);
+            Position = _grassland.WolfEnvironment.MoveTowards(this, bearing, 3);
         }
 
-        // private void RandomMove()
-        // {
-        //     var previous = (Position) Position.Clone();
-        //     var findRandomPosition = Grassland.FindRandomPosition();
-        //     var newPosition = Grassland.WolfEnvironment.MoveTo(this, findRandomPosition, 3);
-        //     if (newPosition.X >= 0 && newPosition.Y >= 0 && newPosition.X < 50 && newPosition.Y < 50)
-        //     {
-        //         Position = newPosition;
-        //     }
-        //     else
-        //     {
-        //         Position = Grassland.WolfEnvironment.MoveTo(this, previous, 1);
-        //     }
-        // }
-        
         private void EatSheep(Sheep sheep)
         {
             Rule = "R6 - Sheep killed!";
@@ -114,8 +103,9 @@ namespace SheepWolfStarter.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
-                var wolf = Grassland.AgentManager.Create<Wolf>().First();
+                var wolf = _grassland.AgentManager.Spawn<Wolf, GrasslandLayer>().First();
                 wolf.Position = (Position) Position.Clone();
+                _grassland.WolfEnvironment.PosAt(wolf, wolf.Position.PositionArray);
                 wolf.Energy = Energy;
                 Energy /= 2;
             }

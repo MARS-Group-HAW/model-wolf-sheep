@@ -41,17 +41,17 @@ namespace SheepWolfStarter
                     new AgentMapping
                     {
                         Name = nameof(Sheep),
-                        InstanceCount = 1,
+                        InstanceCount = 100,
                         IndividualMapping = new List<IndividualMapping>
                         {
-                            new IndividualMapping {Name = "SheepGainFromFood", Value = 4},
+                            new IndividualMapping {Name = "SheepGainFromFood", Value = 10},
                             new IndividualMapping {Name = "SheepReproduce", Value = 4},
                         }
                     },
                     new AgentMapping
                     {
                         Name = nameof(Wolf),
-                        InstanceCount = 0,
+                        InstanceCount = 30,
                         IndividualMapping = new List<IndividualMapping>
                         {
                             new IndividualMapping {Name = "WolfGainFromFood", Value = 20},
@@ -64,7 +64,7 @@ namespace SheepWolfStarter
                         InstanceCount = 1,
                         IndividualMapping = new List<IndividualMapping>
                         {
-                            new IndividualMapping {Name = "GrassRegrowthPerStep", Value = 1}
+                            new IndividualMapping {Name = "GrassRegrowthPerStep", Value = 2}
                         }
                     }
                 }

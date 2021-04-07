@@ -1,11 +1,13 @@
 using System;
 using Mars.Interfaces.Agents;
+using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Environments;
 
 namespace SheepWolfStarter.Model
 {
     public class GrassGrowthAgent : IAgent<GrasslandLayer>
     {
+        [PropertyDescription]
         public int GrassRegrowthPerStep { get; set; }
 
         public void Init(GrasslandLayer layer)
