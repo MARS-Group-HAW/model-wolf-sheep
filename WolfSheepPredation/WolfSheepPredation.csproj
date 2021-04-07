@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>SheepWolfStarter</AssemblyName>
+    <RootNamespace>SheepWolfStarter</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Mars.Life.Simulations" Version="4.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Analysis\analysis.Rproj" />
+  </ItemGroup>
+</Project>
