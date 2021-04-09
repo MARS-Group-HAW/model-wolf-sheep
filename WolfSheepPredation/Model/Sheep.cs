@@ -38,6 +38,8 @@ namespace SheepWolfStarter.Model
 
         public Position Position { get; set; }
 
+        public string Type => "Sheep";
+
         public string Rule { get; private set; }
         public int Energy { get; private set; }
 

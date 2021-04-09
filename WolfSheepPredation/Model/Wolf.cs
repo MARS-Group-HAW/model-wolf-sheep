@@ -29,14 +29,14 @@ namespace SheepWolfStarter.Model
             var random = RandomHelper.Random;
             Position = _grassland.FindRandomPosition();
             _grassland.WolfEnvironment.Insert(this);
-            Energy = random.Next(2 * WolfGainFromFood);
-            TargetDistance = 1000;
+            Energy = random.Next(2 * WolfGainFromFood) + WolfGainFromFood;
         }
 
         private GrasslandLayer _grassland;
 
         public Position Position { get; set; }
 
+        public string Type => "Wolf";
         public string Rule { get; private set; }
         public int Energy { get; private set; }
 
@@ -44,33 +44,39 @@ namespace SheepWolfStarter.Model
         {
             EnergyLoss();
             Spawn(WolfReproduce);
-            
+
             var target = _grassland.SheepEnvironment.Explore(Position).FirstOrDefault();
             if (target != null)
             {
-                var chebyshev = (int)Distance.Chebyshev(Position.PositionArray, target.Position.PositionArray);
-                TargetDiff =  Math.Abs(TargetDistance - chebyshev);
-                TargetDistance = chebyshev;
-                if (TargetDistance < 1)
+                var distance = (int) Distance.Euclidean(Position.PositionArray, target.Position.PositionArray);
+                TargetDiff = Math.Abs(TargetDistance - distance);
+                TargetDistance = distance;
+                if (TargetDistance <= 3)
                 {
                     Rule = "R3 - Eat Sheep";
                     EatSheep(target);
-                } else if (TargetDistance < 5)
-                {
-                    Rule = "R4 - Sheep near by - move towards it";
-                    var bearing = Position.GetBearing(target.Position);
-                    Position = _grassland.WolfEnvironment.MoveTo(this, bearing, 2);
                 }
-                else
+                else //if (TargetDistance < 20)
                 {
-                    Rule = "R5 - No sheep near by - random move";
-                    RandomMove();
+                    Rule = $"R4 - Move towards sheep: {TargetDistance} tiles away";
+                    MoveTowardsTarget(target);
                 }
+                // else
+                // {
+                //     Rule = "R5 - No sheep near by - random move";
+                //     RandomMove();
+                // }
             }
             else
             {
                 Rule = "R6 - No more sheep exist";
             }
+        }
+
+        private void MoveTowardsTarget(Sheep target)
+        {
+            var bearing = Position.GetBearing(target.Position);
+            Position = _grassland.WolfEnvironment.MoveTowards(this, bearing, 3);
         }
 
         public int TargetDiff { get; set; }
@@ -94,7 +100,7 @@ namespace SheepWolfStarter.Model
 
         private void EatSheep(Sheep sheep)
         {
-            Rule = "R6 - Sheep killed!";
+            Rule = "R7 - Sheep killed!";
             Energy += WolfGainFromFood;
             sheep.Kill();
         }

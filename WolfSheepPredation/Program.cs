@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Mars.Components.Starter;
 using Mars.Interfaces.Model;
 using SheepWolfStarter.Model;
@@ -16,7 +17,23 @@ namespace SheepWolfStarter
             description.AddAgent<Sheep, GrasslandLayer>();
             description.AddAgent<Wolf, GrasslandLayer>();
 
-            var config = new SimulationConfig
+
+            // use config.json 
+            var file = File.ReadAllText("config.json");
+            var config = SimulationConfig.Deserialize(file);
+
+            //use code defined config
+            // var config = GenerateConfig();
+
+            var starter = SimulationStarter.Start(description, config);
+            var handle = starter.Run();
+            Console.WriteLine("Successfully executed iterations: " + handle.Iterations);
+            starter.Dispose();
+        }
+
+        private static SimulationConfig GenerateConfig()
+        {
+            return new SimulationConfig
             {
                 Globals =
                 {
@@ -44,18 +61,18 @@ namespace SheepWolfStarter
                         InstanceCount = 100,
                         IndividualMapping = new List<IndividualMapping>
                         {
-                            new IndividualMapping {Name = "SheepGainFromFood", Value = 10},
-                            new IndividualMapping {Name = "SheepReproduce", Value = 4},
+                            new IndividualMapping {Name = "SheepGainFromFood", Value = 4},
+                            new IndividualMapping {Name = "SheepReproduce", Value = 5},
                         }
                     },
                     new AgentMapping
                     {
                         Name = nameof(Wolf),
-                        InstanceCount = 30,
+                        InstanceCount = 10,
                         IndividualMapping = new List<IndividualMapping>
                         {
-                            new IndividualMapping {Name = "WolfGainFromFood", Value = 20},
-                            new IndividualMapping {Name = "WolfReproduce", Value = 5},
+                            new IndividualMapping {Name = "WolfGainFromFood", Value = 30},
+                            new IndividualMapping {Name = "WolfReproduce", Value = 10},
                         }
                     },
                     new AgentMapping
@@ -64,17 +81,11 @@ namespace SheepWolfStarter
                         InstanceCount = 1,
                         IndividualMapping = new List<IndividualMapping>
                         {
-                            new IndividualMapping {Name = "GrassRegrowthPerStep", Value = 2}
+                            new IndividualMapping {Name = "GrassRegrowthPerStep", Value = 1}
                         }
                     }
                 }
             };
-            
-            var starter = SimulationStarter.Start(description, config);
-            var handle = starter.Run();
-            Console.WriteLine("Successfully executed iterations: " + handle.Iterations);
-            starter.Dispose();
         }
     }
 }
-    

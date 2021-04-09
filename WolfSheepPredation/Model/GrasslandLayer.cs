@@ -10,8 +10,19 @@ namespace SheepWolfStarter.Model
 {
     public class GrasslandLayer : RasterLayer
     {
+        /// <summary>
+        ///     Holds all sheep in a grid environment.
+        /// </summary>
         public SpatialHashEnvironment<Sheep> SheepEnvironment { get; private set; }
+        
+        /// <summary>
+        ///     Holds all wolves in a grid environment.
+        /// </summary>
         public SpatialHashEnvironment<Wolf> WolfEnvironment { get; private set; }
+        
+        /// <summary>
+        ///     Responsible to create new agents and initialize them with required dependencies
+        /// </summary>
         public IAgentManager AgentManager { get; private set; }
 
         public override bool InitLayer(LayerInitData layerInitData, RegisterAgent registerAgentHandle,

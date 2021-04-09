@@ -1,55 +1,56 @@
 {
-	"globals": {
-		"steps" : 100,
-		"output": "csv",
-		"options": {
-			"delimiter": ";",
-			"format": "en-EN"
+	"globals":{
+		"steps":100,
+		"output":"csv",
+		"options":{
+			"delimiter":";",
+			"format":"en-EN"
 		}
 	},
-	"layers": [
+	"layers":[
 		{
-			"name":"Grassland",
-			"file":"grid.csv"
+			"name":"GrasslandLayer",
+			"file":"Resources/grid.csv"
 		}
 	],
-	"agents": [ {
-      "name":"Sheep",
-      "count":100,
-      "mapping": [
-      	{
-      		"parameter" : "SheepGainFromFood",
-      		"value" : 4
-      	},
-      	{
-      		"parameter" : "SheepReproduce",
-      		"value" : 4
-      	}
-      ]
-}, 
-{
-      "name":"Wolf",
-      "count":50,
-      "mapping": [
-      	{
-      		"parameter" : "WolfGainFromFood",
-      		"value" : 20
-      	},
-      	{
-      		"parameter" : "WolfReproduce",
-      		"value" : 5
-      	}
-      ]
-},
-{
-	  "name":"GrassGrowthAgent",
-	  "count":1,
-	  "mapping": [
-      	{
-      		"parameter" : "GrassRegrowthPerStep",
-      		"value" : 1
-      	}
-      ]
-}
-  ]
+	"agents":[
+		{
+			"name":"Sheep",
+			"count":100,
+			"mapping":[
+				{
+					"parameter":"SheepGainFromFood",
+					"value":4
+				},
+				{
+					"parameter":"SheepReproduce",
+					"value":4
+				}
+			]
+		},
+		{
+			"name":"Wolf",
+			"count":50,
+			"mapping":[
+				{
+					"parameter":"WolfGainFromFood",
+					"value":20
+				},
+				{
+					"parameter":"WolfReproduce",
+					"value":5
+				}
+			]
+		},
+		{
+			"name":"GrassGrowthAgent",
+			"count":1,
+			"mapping":[
+				{
+					"parameter":"GrassRegrowthPerStep",
+					"value":1
+				}
+			]
+		}
+	]
 }

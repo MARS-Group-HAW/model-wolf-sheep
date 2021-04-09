@@ -1,2 +1,3 @@
-cd LIFEStarter/
-dotnet run --project LIFEStarter.csproj
+cd WolfSheepPredation/
+dotnet run --project WolfSheepPredation.csproj
+Rscript ../Analysis/mywsp.R
