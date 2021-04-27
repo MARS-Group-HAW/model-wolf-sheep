@@ -1,7 +1,7 @@
 {
 	"globals":{
 		"steps":100,
-		"output":"none",
+		"output":"csv",
 		"options":{
 			"delimiter":";",
 			"format":"en-EN"
@@ -17,7 +17,6 @@
 		{
 			"name":"Sheep",
 			"count":100,
-			"output":"sqlite",
 			"mapping":[
 				{
 					"parameter":"SheepGainFromFood",
@@ -40,16 +39,6 @@
 				{
 					"parameter":"WolfReproduce",
 					"value":5
-				}
-			]
-		},
-		{
-			"name":"GrassGrowthAgent",
-			"count":1,
-			"mapping":[
-				{
-					"parameter":"GrassRegrowthPerStep",
-					"value":1
 				}
 			]
 		}

@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
+using Mars.Common.Core;
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using Mars.Numerics.Statistics;
 
-namespace SheepWolfStarter.Model
+namespace WolfSheepGrassPredation.Model
 {
     /// <summary>
     ///     Sheep walk around by chance.
@@ -24,14 +25,33 @@ namespace SheepWolfStarter.Model
         [PropertyDescription]
         public int SheepReproduce { get; set; }
 
+        [PropertyDescription]
+        public int Xpos { get; set; }
+
+        [PropertyDescription]
+        public int Ypos { get; set; }
+
+        [PropertyDescription]
+        public int InitEnergy { get; set; }
+
         public void Init(GrasslandLayer layer)
         {
             _grassland = layer;
 
-            //Spawn somewhere in the grid when the simulation starts
-            Position = _grassland.FindRandomPosition();
+            if (InitEnergy > 0)
+            {
+                // Spawn at predefined position
+                Energy = InitEnergy;
+                Position = Position.CreatePosition(Xpos, Ypos);
+            }
+            else
+            {
+                // Spawn somewhere on the grid
+                Energy = RandomHelper.Random.Next(2 * SheepGainFromFood);
+                Position = _grassland.FindRandomPosition();
+            }
+
             _grassland.SheepEnvironment.Insert(this);
-            Energy = RandomHelper.Random.Next(2 * SheepGainFromFood);
         }
 
         private GrasslandLayer _grassland;
@@ -45,8 +65,8 @@ namespace SheepWolfStarter.Model
 
         public void Tick()
         {
-            // EnergyLoss();
-            // Spawn(SheepReproduce);
+            EnergyLoss();
+            Spawn(SheepReproduce);
             RandomMove();
 
             if (_grassland[Position] > 0)
@@ -90,9 +110,8 @@ namespace SheepWolfStarter.Model
 
         private void EatGrass()
         {
-            Energy += SheepGainFromFood;
-            var grassValue = _grassland[Position];
-            _grassland[Position] = Math.Max(grassValue - 3, 0);
+            var grass = _grassland.Grasses[Position.X.Value<int>(), Position.Y.Value<int>()];
+            Energy += grass.Eat(SheepGainFromFood);
         }
 
         public void Kill()

@@ -3751,11 +3751,12 @@
 											"_parent": {
 												"$ref": "AAAAAAF4+tBuaM53OiI="
 											},
-											"visible": false,
 											"font": "Arial;13;0",
-											"left": 48,
-											"top": -48,
-											"height": 13
+											"left": 613,
+											"top": 85,
+											"width": 80.1962890625,
+											"height": 13,
+											"text": "«raster-layer»"
 										},
 										{
 											"_type": "LabelView",
@@ -3765,8 +3766,8 @@
 											},
 											"font": "Arial;13;1",
 											"left": 613,
-											"top": 87,
-											"width": 78.736328125,
+											"top": 100,
+											"width": 80.1962890625,
 											"height": 13,
 											"text": "Precipitation"
 										},
@@ -3801,8 +3802,8 @@
 									"font": "Arial;13;0",
 									"left": 608,
 									"top": 80,
-									"width": 88.736328125,
-									"height": 25,
+									"width": 90.1962890625,
+									"height": 38,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAF4+tBuaM544eo="
 									},
@@ -3827,8 +3828,8 @@
 									},
 									"font": "Arial;13;0",
 									"left": 608,
-									"top": 105,
-									"width": 88.736328125,
+									"top": 118,
+									"width": 90.1962890625,
 									"height": 10
 								},
 								{
@@ -3842,8 +3843,8 @@
 									},
 									"font": "Arial;13;0",
 									"left": 608,
-									"top": 115,
-									"width": 88.736328125,
+									"top": 128,
+									"width": 90.1962890625,
 									"height": 10
 								},
 								{
@@ -3883,8 +3884,8 @@
 							"containerChangeable": true,
 							"left": 608,
 							"top": 80,
-							"width": 88.736328125,
-							"height": 45,
+							"width": 90.1962890625,
+							"height": 58,
 							"nameCompartment": {
 								"$ref": "AAAAAAF4+tBuaM53OiI="
 							},
@@ -4050,7 +4051,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 634,
-									"top": 143,
+									"top": 156,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -4070,7 +4071,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 620,
-									"top": 146,
+									"top": 159,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -4090,7 +4091,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 661,
-									"top": 139,
+									"top": 152,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -4134,7 +4135,7 @@
 							"tail": {
 								"$ref": "AAAAAAF49KDm3yrXVMc="
 							},
-							"points": "648:192;648:143;649:143;649:124",
+							"points": "648:192;648:143;649:143;649:137",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF4+tD2fM/2ziE="
@@ -4893,7 +4894,8 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Precipitation"
+					"name": "Precipitation",
+					"stereotype": "raster-layer"
 				}
 			]
 		}

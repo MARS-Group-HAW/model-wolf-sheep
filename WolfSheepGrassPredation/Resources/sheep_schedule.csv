@@ -1,0 +1,2 @@
+startTime,endTime,spawningIntervalInMinutes,spawningAmount,Xpos,Ypos,InitEnergy
+2018-01-01T00:00:00,2018-12-31T23:00:00,1440,1,4,4,40
