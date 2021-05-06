@@ -1,7 +1,7 @@
 {
   "globals": {
     "steps": 1000,
-    "output": "none",
+    "output": "csv",
     "options": {
       "delimiter": ";",
       "format": "en-EN"
