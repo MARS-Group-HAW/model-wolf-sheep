@@ -83,13 +83,12 @@ namespace WolfSheepGrassPredation.Model
         public Position FindRandomPosition()
         {
             var random = RandomHelper.Random;
-            return Position.CreatePosition(random.Next(Width - 1), random.Next(Height - 1));
+            return Position.CreatePosition(random.Next(Width), random.Next(Height));
         }
 
         public void Tick()
         {
             //regrow grass? => now not necessary because Grass-Agent takes care of it
-            Thread.Sleep(100);
         }
         
         public void PreTick()

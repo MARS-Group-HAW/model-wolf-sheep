@@ -1,6 +1,7 @@
 using System;
 using Mars.Common.Core;
 using Mars.Interfaces.Agents;
+using Mars.Interfaces.Environments;
 
 namespace WolfSheepGrassPredation.Model
 {
@@ -24,11 +25,14 @@ namespace WolfSheepGrassPredation.Model
         public void Tick()
         {
             Energy += Regrowth;
-            var precipitation = Grassland.PrecipitationLayer[X, Y];
-            if (precipitation > 0)
+            if (Grassland.PrecipitationLayer.IsInRaster(Position.CreatePosition(X, Y)))
             {
-                //Regrowth is higher
-                Energy += precipitation / 100;
+                var precipitation = Grassland.PrecipitationLayer[X, Y];
+                if (precipitation > 0)
+                {
+                    //Regrowth is higher
+                    Energy += precipitation / 100;
+                }
             }
         }
 

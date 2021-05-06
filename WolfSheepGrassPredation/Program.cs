@@ -13,7 +13,7 @@ namespace WolfSheepGrassPredation
             var description = new ModelDescription();
             description.AddLayer<GrasslandLayer>();
             description.AddLayer<PrecipitationLayer>();
-            description.AddLayer<SheepSchedulerLayer>();
+            // description.AddLayer<SheepSchedulerLayer>();
             
             description.AddAgent<Grass, GrasslandLayer>();
             description.AddAgent<Sheep, GrasslandLayer>();
@@ -39,7 +39,7 @@ namespace WolfSheepGrassPredation
                 Globals =
                 {
                     StartPoint = DateTime.Parse("2018-01-01T00:00:00"),
-                    EndPoint = DateTime.Parse("2018-04-01T00:00:00"),
+                    EndPoint = DateTime.Parse("2019-04-01T00:00:00"),
                     DeltaTUnit = TimeSpanUnit.Days,
                     OutputTarget = OutputTargetType.None,
                     CsvOptions =
@@ -48,6 +48,7 @@ namespace WolfSheepGrassPredation
                         NumberFormat = "en-EN"
                     },
                     ShowConsoleProgress = true,
+                    EnableSimpleVisualization = true
                 },
                 LayerMappings = new List<LayerMapping>
                 {
@@ -72,12 +73,12 @@ namespace WolfSheepGrassPredation
                     new AgentMapping
                     {
                         Name = nameof(Sheep),
-                        File = "Resources/sheep.csv",
-                        InstanceCount = 3,
+                        // File = "Resources/sheep.csv",
+                        InstanceCount = 30,
                         IndividualMapping = new List<IndividualMapping>
                         {
                             new IndividualMapping {Name = "SheepGainFromFood", Value = 4},
-                            new IndividualMapping {Name = "SheepReproduce", Value = 5},
+                            new IndividualMapping {Name = "SheepReproduce", Value = 2},
                         },
                         OutputTarget = OutputTargetType.SqLite,
                         OutputFilter = new List<OutputFilter>
@@ -97,7 +98,7 @@ namespace WolfSheepGrassPredation
                         IndividualMapping = new List<IndividualMapping>
                         {
                             new IndividualMapping {Name = "WolfGainFromFood", Value = 30},
-                            new IndividualMapping {Name = "WolfReproduce", Value = 10},
+                            new IndividualMapping {Name = "WolfReproduce", Value = 1},
                         }
                     }
                 }

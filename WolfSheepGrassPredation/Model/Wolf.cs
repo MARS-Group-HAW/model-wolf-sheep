@@ -43,7 +43,7 @@ namespace WolfSheepGrassPredation.Model
         public void Tick()
         {
             EnergyLoss();
-            // Spawn(WolfReproduce);
+            Spawn(WolfReproduce);
 
             var target = _grassland.SheepEnvironment.Explore(Position).FirstOrDefault();
             if (target != null)
@@ -56,16 +56,16 @@ namespace WolfSheepGrassPredation.Model
                     Rule = "R3 - Eat Sheep";
                     EatSheep(target);
                 }
-                else //if (TargetDistance < 20)
+                else if (TargetDistance < 20)
                 {
                     Rule = $"R4 - Move towards sheep: {TargetDistance} tiles away";
                     MoveTowardsTarget(target);
                 }
-                // else
-                // {
-                //     Rule = "R5 - No sheep near by - random move";
-                //     RandomMove();
-                // }
+                else
+                {
+                    Rule = "R5 - No sheep near by - random move";
+                    RandomMove();
+                }
             }
             else
             {
