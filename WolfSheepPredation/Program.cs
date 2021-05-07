@@ -40,7 +40,7 @@ namespace SheepWolfStarter
             {
                 Globals =
                 {
-                    Steps = 2,
+                    Steps = 100,
                     OutputTarget = OutputTargetType.Csv,
                     CsvOptions =
                     {
@@ -61,8 +61,7 @@ namespace SheepWolfStarter
                     new AgentMapping
                     {
                         Name = nameof(Sheep),
-                        InstanceCount = 1,
-                        OutputTarget = OutputTargetType.SqLite,
+                        InstanceCount = 20,
                         IndividualMapping = new List<IndividualMapping>
                         {
                             new IndividualMapping {Name = "SheepGainFromFood", Value = 4},
@@ -72,7 +71,7 @@ namespace SheepWolfStarter
                     new AgentMapping
                     {
                         Name = nameof(Wolf),
-                        InstanceCount = 0,
+                        InstanceCount = 3,
                         IndividualMapping = new List<IndividualMapping>
                         {
                             new IndividualMapping {Name = "WolfGainFromFood", Value = 30},

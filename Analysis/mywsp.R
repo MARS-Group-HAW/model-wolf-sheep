@@ -1,5 +1,5 @@
-sheeps <- read.csv(file="../WolfSheepPredation/bin/Debug/netcoreapp2.0/Sheep.csv",head=T, sep=";", dec="." )
-wolves <- read.csv(file="../WolfSheepPredation/bin/Debug/netcoreapp2.0/Wolf.csv",head=T, sep=";", dec="." )
+sheeps <- read.csv(file="../WolfSheepPredation/Sheep.csv",head=T, sep=";", dec="." )
+wolves <- read.csv(file="../WolfSheepPredation/Wolf.csv",head=T, sep=";", dec="." )
 
 attach(sheeps)
 attach(wolves)

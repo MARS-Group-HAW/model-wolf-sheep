@@ -1,6 +1,6 @@
 {
   "globals": {
-    "steps": 1000,
+    "steps": 250,
     "output": "csv",
     "options": {
       "delimiter": ";",
@@ -26,13 +26,13 @@
         },
         {
           "parameter": "SheepReproduce",
-          "value": 5
+          "value": 2
         }
       ]
     },
     {
       "name": "Wolf",
-      "count": 3,
+      "count": 5,
       "mapping": [
         {
           "parameter": "WolfGainFromFood",
@@ -40,7 +40,7 @@
         },
         {
           "parameter": "WolfReproduce",
-          "value": 3
+          "value": 1
         }
       ]
     },
