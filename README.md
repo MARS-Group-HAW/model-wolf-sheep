@@ -72,8 +72,20 @@ the [Visualization](https://git.haw-hamburg.de/mars/model-deployments/-/tree/mas
 The visualization displays the current world state of the simulation. So start the simulation script first before
 running the simulation.
 
+The simulation can be started directly with the following script. Remember to only open a single instance of a visualization at a time. It will always display the current simulation. So if a new simulation is started, then the visualization tool will connect to the new simulation run.
+
+```bash
+sh run_vis_only.sh
+```
+
 ## Analyze
 
 The result of the simulation is written in a CSV file. To change the output format modify the scenario configuration (
 config.json). The results of the CSV can be directly analyzed and visualized with a preferred GIS tool. A script in the
-language R is provided that displays a graph, which shows the correlation of population count to time.  
+language R is provided that displays a graph, which shows the correlation of population count to time.
+
+To run the analysis use the following script.
+
+```bash
+sh run_analysis.sh
+```

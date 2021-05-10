@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Mars.Components.Starter;
 using Mars.Interfaces.Model;
 using WolfSheepGrassPredation.Model;
@@ -20,11 +21,11 @@ namespace WolfSheepGrassPredation
             description.AddAgent<Wolf, GrasslandLayer>();
             
             // use config.json 
-            // var file = File.ReadAllText("config.json");
-            // var config = SimulationConfig.Deserialize(file);
+            var file = File.ReadAllText("config.json");
+            var config = SimulationConfig.Deserialize(file);
 
             //use code defined config
-            var config = GenerateConfig();
+            // var config = GenerateConfig();
 
             var starter = SimulationStarter.Start(description, config);
             var handle = starter.Run();

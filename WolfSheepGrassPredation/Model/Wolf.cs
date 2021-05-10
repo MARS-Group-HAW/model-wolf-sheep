@@ -25,11 +25,12 @@ namespace WolfSheepGrassPredation.Model
         {
             _grassland = layer;
 
+            if (Energy == 0)
+                Energy = 2 * RandomHelper.Random.Next(WolfGainFromFood) + WolfGainFromFood;
+
             //Spawn somewhere in the grid when the simulation starts
-            var random = RandomHelper.Random;
-            Position = _grassland.FindRandomPosition();
+            Position ??= _grassland.FindRandomPosition();
             _grassland.WolfEnvironment.Insert(this);
-            Energy = random.Next(2 * WolfGainFromFood) + WolfGainFromFood;
         }
 
         private GrasslandLayer _grassland;
@@ -45,20 +46,20 @@ namespace WolfSheepGrassPredation.Model
             EnergyLoss();
             Spawn(WolfReproduce);
 
-            var target = _grassland.SheepEnvironment.Explore(Position).FirstOrDefault();
+            // var target = _grassland.SheepEnvironment.Explore(Position, -1D, 1).FirstOrDefault();
+            var target = _grassland.SheepEnvironment.Entities.OrderBy(sheep =>
+                Distance.Chebyshev(Position.PositionArray, sheep.Position.PositionArray)).FirstOrDefault();
             if (target != null)
             {
-                var distance = (int) Distance.Euclidean(Position.PositionArray, target.Position.PositionArray);
-                TargetDiff = Math.Abs(TargetDistance - distance);
-                TargetDistance = distance;
-                if (TargetDistance <= 3)
+                var targetDistance = (int) Distance.Chebyshev(Position.PositionArray, target.Position.PositionArray);
+                if (targetDistance <= 2)
                 {
                     Rule = "R3 - Eat Sheep";
                     EatSheep(target);
                 }
-                else if (TargetDistance < 20)
+                else if (targetDistance < 10)
                 {
-                    Rule = $"R4 - Move towards sheep: {TargetDistance} tiles away";
+                    Rule = $"R4 - Move towards sheep: {targetDistance} tiles away";
                     MoveTowardsTarget(target);
                 }
                 else
@@ -70,21 +71,20 @@ namespace WolfSheepGrassPredation.Model
             else
             {
                 Rule = "R6 - No more sheep exist";
+                RandomMove();
             }
         }
 
         private void MoveTowardsTarget(Sheep target)
         {
-            var bearing = Position.GetBearing(target.Position);
-            Position = _grassland.WolfEnvironment.MoveTowards(this, bearing, 3);
+            var directionToEnemy =
+                PositionHelper.CalculateBearingCartesian(Position.X, Position.Y, target.Position.X, target.Position.Y);
+            _grassland.WolfEnvironment.MoveTowards(this, directionToEnemy, 2);
         }
-
-        public int TargetDiff { get; set; }
-        public int TargetDistance { get; set; }
 
         private void EnergyLoss()
         {
-            Energy -= 1;
+            Energy -= 2;
             if (Energy <= 0)
             {
                 _grassland.WolfEnvironment.Remove(this);
@@ -100,7 +100,6 @@ namespace WolfSheepGrassPredation.Model
 
         private void EatSheep(Sheep sheep)
         {
-            Rule = "R7 - Sheep killed!";
             Energy += WolfGainFromFood;
             sheep.Kill();
         }
@@ -109,10 +108,12 @@ namespace WolfSheepGrassPredation.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
-                var wolf = _grassland.AgentManager.Spawn<Wolf, GrasslandLayer>().First();
-                wolf.Position = (Position) Position.Clone();
-                _grassland.WolfEnvironment.PosAt(wolf, wolf.Position.PositionArray);
-                wolf.Energy = Energy;
+                _grassland.AgentManager.Spawn<Wolf, GrasslandLayer>(null, agent =>
+                {
+                    agent.Position = Position.CreatePosition(Position.X, Position.Y);
+                    agent.Energy = Energy / 2;
+                }).Take(1).First();
+
                 Energy /= 2;
             }
         }

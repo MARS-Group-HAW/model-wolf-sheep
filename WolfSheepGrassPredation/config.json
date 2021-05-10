@@ -1,22 +1,30 @@
 {
 	"globals":{
-		"steps":100,
-		"output":"csv",
-		"options":{
-			"delimiter":";",
-			"format":"en-EN"
-		}
+		"deltaT": 1,
+		"startPoint": "2018-01-01T00:00:00",
+		"endPoint": "2018-04-01T23:00:00",
+		"deltaTUnit": "days",
+		"pythonVisualization": true,
+		"console": true
 	},
 	"layers":[
 		{
 			"name":"GrasslandLayer",
 			"file":"Resources/grid.csv"
+		},
+		{
+			"name":"PrecipitationLayer",
+			"file":"Resources/prec_wp.zip"
+		},
+		{
+			"name":"SheepSchedulerLayer",
+			"file":"Resources/sheep_schedule.csv"
 		}
 	],
 	"agents":[
 		{
 			"name":"Sheep",
-			"count":100,
+			"count":30,
 			"mapping":[
 				{
 					"parameter":"SheepGainFromFood",
@@ -24,13 +32,13 @@
 				},
 				{
 					"parameter":"SheepReproduce",
-					"value":4
+					"value":2
 				}
 			]
 		},
 		{
 			"name":"Wolf",
-			"count":50,
+			"count":1,
 			"mapping":[
 				{
 					"parameter":"WolfGainFromFood",
@@ -38,7 +46,7 @@
 				},
 				{
 					"parameter":"WolfReproduce",
-					"value":5
+					"value":1
 				}
 			]
 		}

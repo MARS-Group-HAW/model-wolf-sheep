@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Threading;
 using Mars.Common.Core.Collections;
 using Mars.Components.Environments;
 using Mars.Components.Layers;
@@ -46,7 +45,7 @@ namespace WolfSheepGrassPredation.Model
             WolfEnvironment = new SpatialHashEnvironment<Wolf>(Width - 1, Height - 1) {CheckBoundaries = true};
 
             // Initially create agents. For periodical creation check SheepSchedulerLayer.
-            // For model dependent creation inspect Sheeps and Wolfs reproduce method.
+            // For model dependent creation inspect sheeps and wolves reproduce method.
             AgentManager = layerInitData.Container.Resolve<IAgentManager>();
             AgentManager.Spawn<Sheep, GrasslandLayer>().ToList();
             AgentManager.Spawn<Wolf, GrasslandLayer>().ToList();

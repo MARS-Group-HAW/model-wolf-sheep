@@ -93,10 +93,11 @@ namespace WolfSheepGrassPredation.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
-                var sheep = _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>().First();
-                sheep.Position = (Position) Position.Clone();
-                _grassland.SheepEnvironment.PosAt(sheep, sheep.Position.PositionArray);
-                sheep.Energy = Energy;
+                _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>(null, agent =>
+                {
+                    agent.Position = Position.CreatePosition(Position.X, Position.Y);
+                    agent.Energy = Energy / 2;
+                }).Take(1).First();
                 Energy /= 2;
             }
         }
@@ -105,7 +106,7 @@ namespace WolfSheepGrassPredation.Model
         {
             //Sheep moves 1 step straight or diagonal(1.4243)
             var bearing = RandomHelper.Random.Next(360);
-            Position = _grassland.SheepEnvironment.MoveTowards(this, bearing, 1);
+            _grassland.SheepEnvironment.MoveTowards(this, bearing, 1);
         }
 
         private void EatGrass()

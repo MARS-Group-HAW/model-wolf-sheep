@@ -16,18 +16,21 @@ namespace WolfSheepGrassPredation.Model
         {
             Grassland = layer;
             Energy = InitValue;
+            Position = Position.CreatePosition(X, Y);
         }
 
         public double Energy { get; set; }
+        public Position Position { get; set; }
 
         private GrasslandLayer Grassland { get; set; }
 
         public void Tick()
         {
             Energy += Regrowth;
-            if (Grassland.PrecipitationLayer.IsInRaster(Position.CreatePosition(X, Y)))
+
+            if (Grassland.PrecipitationLayer.IsInRaster(Position))
             {
-                var precipitation = Grassland.PrecipitationLayer[X, Y];
+                var precipitation = Grassland.PrecipitationLayer.GetValueByGeoPosition(Position);
                 if (precipitation > 0)
                 {
                     //Regrowth is higher

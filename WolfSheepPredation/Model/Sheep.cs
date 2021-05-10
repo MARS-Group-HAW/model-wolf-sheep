@@ -75,7 +75,7 @@ namespace SheepWolfStarter.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
-                _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>(null, agent =>
+               _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>(null, agent =>
                 {
                     agent.Position = Position.CreatePosition(Position.X, Position.Y);
                     agent.Energy = Energy / 2;
