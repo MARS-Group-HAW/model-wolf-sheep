@@ -65,7 +65,11 @@ namespace WolfSheepGrassPredation.Model
 
         public void Tick()
         {
-            EnergyLoss();
+            if (EnergyLoss())
+            {
+                // if the agent died, return to prevent further execution of the Tick() method
+                return;
+            }
             Spawn(SheepReproduce);
             RandomMove();
 
@@ -80,13 +84,16 @@ namespace WolfSheepGrassPredation.Model
             }
         }
 
-        private void EnergyLoss()
+        private bool EnergyLoss()
         {
             Energy -= 1;
             if (Energy <= 0)
             {
                 Kill();
+                return true;
             }
+
+            return false;
         }
 
         private void Spawn(int percent)

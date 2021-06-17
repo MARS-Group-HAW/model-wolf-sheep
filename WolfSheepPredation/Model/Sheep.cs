@@ -47,7 +47,11 @@ namespace SheepWolfStarter.Model
 
         public void Tick()
         {
-            EnergyLoss();
+            if (EnergyLoss())
+            {
+                // if the agent died, return to prevent further execution of the Tick() method
+                return;
+            }
             Spawn(SheepReproduce);
             RandomMove();
 
@@ -62,13 +66,16 @@ namespace SheepWolfStarter.Model
             }
         }
 
-        private void EnergyLoss()
+        private bool EnergyLoss()
         {
             Energy -= 2;
             if (Energy <= 0)
             {
                 Kill();
+                return true;
             }
+
+            return false;
         }
 
         private void Spawn(int percent)

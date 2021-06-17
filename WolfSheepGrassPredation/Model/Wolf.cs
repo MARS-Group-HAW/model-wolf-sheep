@@ -43,7 +43,11 @@ namespace WolfSheepGrassPredation.Model
 
         public void Tick()
         {
-            EnergyLoss();
+            if (EnergyLoss())
+            {
+                // if the agent died, return to prevent further execution of the Tick() method
+                return;
+            }
             Spawn(WolfReproduce);
 
             // var target = _grassland.SheepEnvironment.Explore(Position, -1D, 1).FirstOrDefault();
@@ -82,14 +86,17 @@ namespace WolfSheepGrassPredation.Model
             _grassland.WolfEnvironment.MoveTowards(this, directionToEnemy, 2);
         }
 
-        private void EnergyLoss()
+        private bool EnergyLoss()
         {
             Energy -= 2;
             if (Energy <= 0)
             {
                 _grassland.WolfEnvironment.Remove(this);
                 UnregisterHandle.Invoke(_grassland, this);
+                return true;
             }
+
+            return false;
         }
 
         private void RandomMove()
