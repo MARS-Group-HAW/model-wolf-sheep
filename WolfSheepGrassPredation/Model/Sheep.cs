@@ -100,12 +100,20 @@ namespace WolfSheepGrassPredation.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
+                var newEnergy = Energy / 2;
+                if (newEnergy == 0)
+                {
+                    // Prevent respawning with Energy=0 -> would cause new random Energy
+                    // This could happen if Energy is 1: division by 2 -> 0.5 -> cast to int -> 0
+                    return;
+                }
+
                 _grassland.AgentManager.Spawn<Sheep, GrasslandLayer>(null, agent =>
                 {
                     agent.Position = Position.CreatePosition(Position.X, Position.Y);
-                    agent.Energy = Energy / 2;
+                    agent.Energy = newEnergy;
                 }).Take(1).First();
-                Energy /= 2;
+                Energy = newEnergy;
             }
         }
 
