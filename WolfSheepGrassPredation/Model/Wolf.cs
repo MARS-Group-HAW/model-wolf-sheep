@@ -43,7 +43,11 @@ namespace WolfSheepGrassPredation.Model
 
         public void Tick()
         {
-            EnergyLoss();
+            if (EnergyLoss())
+            {
+                // if the agent died, return to prevent further execution of the Tick() method
+                return;
+            }
             Spawn(WolfReproduce);
 
             // var target = _grassland.SheepEnvironment.Explore(Position, -1D, 1).FirstOrDefault();
@@ -82,14 +86,17 @@ namespace WolfSheepGrassPredation.Model
             _grassland.WolfEnvironment.MoveTowards(this, directionToEnemy, 2);
         }
 
-        private void EnergyLoss()
+        private bool EnergyLoss()
         {
             Energy -= 2;
             if (Energy <= 0)
             {
                 _grassland.WolfEnvironment.Remove(this);
                 UnregisterHandle.Invoke(_grassland, this);
+                return true;
             }
+
+            return false;
         }
 
         private void RandomMove()
@@ -108,13 +115,21 @@ namespace WolfSheepGrassPredation.Model
         {
             if (RandomHelper.Random.Next(100) < percent)
             {
+                var newEnergy = Energy / 2;
+                if (newEnergy == 0)
+                {
+                    // Prevent respawning with Energy=0 -> would cause new random Energy
+                    // This could happen if Energy is 1: division by 2 -> 0.5 -> cast to int -> 0
+                    return;
+                }
+
                 _grassland.AgentManager.Spawn<Wolf, GrasslandLayer>(null, agent =>
                 {
                     agent.Position = Position.CreatePosition(Position.X, Position.Y);
-                    agent.Energy = Energy / 2;
+                    agent.Energy = newEnergy;
                 }).Take(1).First();
 
-                Energy /= 2;
+                Energy = newEnergy;
             }
         }
 
