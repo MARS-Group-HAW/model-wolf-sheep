@@ -34,6 +34,7 @@ namespace SheepWolfStarter.Model
             //Spawn somewhere in the grid when the simulation starts or use given Position
             Position ??= _grassland.FindRandomPosition();
             _grassland.SheepEnvironment.Insert(this);
+            
         }
 
         private GrasslandLayer _grassland;
