@@ -1,12 +1,15 @@
 {
   "globals": {
+    "deltaTUnit": "seconds",
+    "startPoint": "2022-02-02T00:00:00",
+    "endPoint": "2022-02-02T00:04:10",
     "steps": 250,
-    "output": "csv",
+    "output": "csv",   
     "options": {
       "delimiter": ";",
       "format": "en-EN"
     },
-    "pythonVisualization": true,
+    "pythonVisualization": false,
     "console": true
   },
   "layers": [

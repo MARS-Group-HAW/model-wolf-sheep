@@ -23,12 +23,10 @@ namespace SheepWolfStarter
             // use config.json that holds the specification of the scenario
             var file = File.ReadAllText("config.json");
             var config = SimulationConfig.Deserialize(file);
-
-            //use code defined config
-            // var config = GenerateConfig();
-
+            var config2 = GenerateConfig();
+            
             // start simulation
-            var starter = SimulationStarter.Start(description, config);
+            var starter = SimulationStarter.Start(description, config2);
             var handle = starter.Run();
             Console.WriteLine("Successfully executed iterations: " + handle.Iterations);
             starter.Dispose();
@@ -40,17 +38,18 @@ namespace SheepWolfStarter
             {
                 Globals =
                 {
-                    Steps = 100,
+                    Steps = 250,
                     OutputTarget = OutputTargetType.Csv,
                     CsvOptions =
                     {
                         Delimiter = ";",
                         NumberFormat = "en-EN"
-                    }
+                    },
+                    ShowConsoleProgress = true
                 },
-                LayerMappings = new List<LayerMapping>
+                LayerMappings = new List<LayerMapping>()
                 {
-                    new LayerMapping
+                    new LayerMapping()
                     {
                         Name = nameof(GrasslandLayer),
                         File = "Resources/grid.csv"

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using Mars.Common;
+using Mars.Common.Core.Random;
 using Mars.Interfaces.Agents;
 using Mars.Interfaces.Annotations;
 using Mars.Interfaces.Environments;
 using Mars.Interfaces.Layers;
 using Mars.Numerics;
-using Mars.Numerics.Statistics;
 
 namespace SheepWolfStarter.Model
 {

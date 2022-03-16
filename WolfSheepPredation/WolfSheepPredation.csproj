@@ -6,6 +6,8 @@
     <RootNamespace>SheepWolfStarter</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\netcoreapp3.1\System.Data.SQLite.dll" />
+    <Content Include="bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll" />
     <Content Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -14,6 +16,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mars.Life.Simulations" Version="4.2.3" />
+    <PackageReference Include="Mars.Life.Simulations" Version="4.3.0-beta-5" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\netcoreapp3.1\Wolf.csv" />
   </ItemGroup>
 </Project>

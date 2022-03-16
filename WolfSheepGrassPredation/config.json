@@ -5,7 +5,8 @@
 		"endPoint": "2018-04-01T23:00:00",
 		"deltaTUnit": "days",
 		"pythonVisualization": true,
-		"console": true
+		"console": true,
+		"output": "csv"
 	},
 	"layers":[
 		{
