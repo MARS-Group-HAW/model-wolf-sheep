@@ -23,7 +23,7 @@ namespace WolfSheepGrassPredation
             // use config.json 
             var file = File.ReadAllText("config.json");
             var config = SimulationConfig.Deserialize(file);
-
+            
             //use code defined config
             // var config = GenerateConfig();
 
@@ -49,7 +49,7 @@ namespace WolfSheepGrassPredation
                         NumberFormat = "en-EN"
                     },
                     ShowConsoleProgress = true,
-                    EnableSimpleVisualization = true
+                    LiveVisualization = true
                 },
                 LayerMappings = new List<LayerMapping>
                 {
